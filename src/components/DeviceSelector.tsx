@@ -37,16 +37,16 @@ const PRESET_DEVICES = [
     desc: '自定义 64 字节 Endpoint Bulk 收发测试固件',
   },
   {
-    name: '沁恒 CH340 / CH341 串口',
+    name: '沁恒 CH340 / CH341 USB 芯片',
     vid: 0x1a86,
     pid: 0x7523,
-    desc: '常见 USB 转 TTL 串口芯片',
+    desc: '常见 USB 接口芯片 (配置 WinUSB 进行底层调试)',
   },
   {
-    name: '意法半导体 STM32 Virtual COM / DFU',
+    name: '意法半导体 STM32 USB DFU / Custom Bulk',
     vid: 0x0483,
     pid: undefined,
-    desc: 'STM32 全系列 USB HID/Bulk/CDC 设备',
+    desc: 'STM32 全系列 USB HID/Bulk/Vendor 设备',
   },
   {
     name: '乐鑫 ESP32 USB JTAG / CDC',

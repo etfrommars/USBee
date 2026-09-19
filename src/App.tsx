@@ -4,7 +4,6 @@ import {
   Cpu,
   Zap,
   Sliders,
-  Cable,
   Layers,
   Terminal,
   HelpCircle,
@@ -18,7 +17,6 @@ import { DeviceSelector } from './components/DeviceSelector';
 import { DeviceInfoCard } from './components/DeviceInfoCard';
 import { DataTransceiver } from './components/DataTransceiver';
 import { ControlTransfer } from './components/ControlTransfer';
-import { SerialDebugger } from './components/SerialDebugger';
 import { ScriptRunner } from './components/ScriptRunner';
 import { ConsoleLog } from './components/ConsoleLog';
 import { HelpModal } from './components/HelpModal';
@@ -37,12 +35,8 @@ export default function App() {
   const [pairedDevices, setPairedDevices] = useState<USBDevice[]>([]);
   const [claimedInterfaceNumber, setClaimedInterfaceNumber] = useState<number | null>(null);
 
-  // Web Serial state
-  const [serialPort, setSerialPort] = useState<any>(null);
-  const [serialReader, setSerialReader] = useState<any>(null);
-
   // Active Tab
-  const [activeTab, setActiveTab] = useState<'transceiver' | 'control' | 'serial' | 'script'>('transceiver');
+  const [activeTab, setActiveTab] = useState<'transceiver' | 'control' | 'script'>('transceiver');
 
   // Logs & Stats
   const [logs, setLogs] = useState<LogEntry[]>([
@@ -433,71 +427,11 @@ export default function App() {
     }
   };
 
-  // Web Serial Integration
-  const handleConnectSerial = async (baudRate: number) => {
-    if (!('serial' in navigator)) return;
-    const port = await (navigator as any).serial.requestPort();
-    await port.open({ baudRate });
-    setSerialPort(port);
-    addLog(`WebSerial 端口连接建立 (波特率: ${baudRate} bps)`, 'SYS');
-
-    // Read loop
-    const reader = port.readable.getReader();
-    setSerialReader(reader);
-
-    (async () => {
-      try {
-        while (true) {
-          const { value, done } = await reader.read();
-          if (done) break;
-          if (value) {
-            addLog('RX Serial', 'RX', value);
-            setStats((s) => ({
-              ...s,
-              rxBytes: s.rxBytes + value.length,
-              rxPackets: s.rxPackets + 1,
-            }));
-          }
-        }
-      } catch (err: any) {
-        // read loop ended
-      } finally {
-        reader.releaseLock();
-      }
-    })();
-  };
-
-  const handleDisconnectSerial = async () => {
-    if (serialReader) {
-      await serialReader.cancel();
-      setSerialReader(null);
-    }
-    if (serialPort) {
-      await serialPort.close();
-      setSerialPort(null);
-      addLog('WebSerial 端口已正常断开', 'SYS');
-    }
-  };
-
-  const handleSendSerial = async (data: Uint8Array) => {
-    if (!serialPort || !serialPort.writable) return;
-    const writer = serialPort.writable.getWriter();
-    await writer.write(data);
-    writer.releaseLock();
-    addLog('TX Serial', 'TX', data);
-    setStats((s) => ({
-      ...s,
-      txBytes: s.txBytes + data.length,
-      txPackets: s.txPackets + 1,
-    }));
-  };
-
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans antialiased pb-12">
       {/* Header Bar */}
       <Header
         device={device}
-        serialPort={serialPort}
         onOpenHelp={() => setIsHelpOpen(true)}
         onRefreshDevices={refreshPairedDevices}
         isInIframe={isInIframe}
@@ -557,18 +491,6 @@ export default function App() {
           </button>
 
           <button
-            onClick={() => setActiveTab('serial')}
-            className={`px-4 py-2.5 rounded-lg text-xs font-bold flex items-center gap-2 transition-all cursor-pointer ${
-              activeTab === 'serial'
-                ? 'bg-indigo-600 text-white shadow-xs'
-                : 'bg-slate-950/70 text-slate-400 hover:text-slate-200 hover:bg-slate-800/80 border border-slate-800'
-            }`}
-          >
-            <Cable className={`w-4 h-4 ${activeTab === 'serial' ? 'text-cyan-300' : 'text-cyan-400'}`} />
-            <span>Web Serial 虚拟串口辅助调试</span>
-          </button>
-
-          <button
             onClick={() => setActiveTab('script')}
             className={`px-4 py-2.5 rounded-lg text-xs font-bold flex items-center gap-2 transition-all cursor-pointer ${
               activeTab === 'script'
@@ -602,16 +524,6 @@ export default function App() {
               device={device}
               onControlTransferOut={handleControlTransferOut}
               onControlTransferIn={handleControlTransferIn}
-            />
-          )}
-
-          {activeTab === 'serial' && (
-            <SerialDebugger
-              serialPort={serialPort}
-              onConnectSerial={handleConnectSerial}
-              onDisconnectSerial={handleDisconnectSerial}
-              onSendSerial={handleSendSerial}
-              onLog={(m, t) => addLog(m, t || 'SYS')}
             />
           )}
 

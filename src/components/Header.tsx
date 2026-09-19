@@ -11,7 +11,6 @@ import {
 
 interface HeaderProps {
   device: USBDevice | null;
-  serialPort: any;
   onOpenHelp: () => void;
   onRefreshDevices: () => void;
   isInIframe: boolean;
@@ -19,13 +18,11 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({
   device,
-  serialPort,
   onOpenHelp,
   onRefreshDevices,
   isInIframe,
 }) => {
   const isWebUsbSupported = typeof navigator !== 'undefined' && 'usb' in navigator;
-  const isWebSerialSupported = typeof navigator !== 'undefined' && 'serial' in navigator;
 
   return (
     <header className="bg-slate-900 border-b border-slate-800 shadow-md sticky top-0 z-30">
@@ -41,7 +38,7 @@ export const Header: React.FC<HeaderProps> = ({
                 USB 设备通用调试上位机
               </h1>
               <span className="px-2 py-0.5 text-xs font-mono font-medium bg-indigo-950/80 text-indigo-300 border border-indigo-700/50 rounded-full">
-                WebUSB & Serial
+                WebUSB 专精调试
               </span>
             </div>
             <p className="text-xs text-slate-400 mt-0.5">
@@ -58,11 +55,6 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="flex items-center text-emerald-400 bg-emerald-950/70 px-3 py-1.5 rounded-full border border-emerald-800">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping mr-2" />
                 USB 已连接 ({device.productName || 'USB Device'})
-              </span>
-            ) : serialPort ? (
-              <span className="flex items-center text-cyan-400 bg-cyan-950/70 px-3 py-1.5 rounded-full border border-cyan-800">
-                <span className="w-2 h-2 rounded-full bg-cyan-500 animate-ping mr-2" />
-                串口已连接 (WebSerial)
               </span>
             ) : (
               <span className="flex items-center text-amber-400 bg-amber-950/70 px-3 py-1.5 rounded-full border border-amber-800">

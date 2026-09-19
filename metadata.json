@@ -1,6 +1,6 @@
 {
   "name": "USB 设备调试器 (WebUSB Tool)",
-  "description": "全功能 WebUSB / Web Serial 硬件调试上位机，支持 USB 设备搜索与选择，Bulk/Control 数据收发与接口控制",
+  "description": "全功能 WebUSB 硬件调试上位机，支持 USB 设备搜索与选择，Bulk/Interrupt/Control 数据收发与接口控制",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
