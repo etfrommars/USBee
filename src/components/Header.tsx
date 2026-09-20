@@ -7,6 +7,7 @@ import {
   AlertTriangle,
   RefreshCw,
   Cpu,
+  Github,
 } from 'lucide-react';
 
 interface HeaderProps {
@@ -34,11 +35,12 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <h1 className="text-lg font-bold text-slate-100 tracking-tight">
-                USB 设备通用调试上位机
+              <h1 className="text-lg font-bold text-slate-100 tracking-tight flex items-center gap-1.5">
+                <span>USBee</span>
+                <span className="text-xs font-normal text-slate-400">| USB 通用调试上位机</span>
               </h1>
               <span className="px-2 py-0.5 text-xs font-mono font-medium bg-indigo-950/80 text-indigo-300 border border-indigo-700/50 rounded-full">
-                WebUSB 专精调试
+                WebUSB
               </span>
             </div>
             <p className="text-xs text-slate-400 mt-0.5">
@@ -80,6 +82,18 @@ export const Header: React.FC<HeaderProps> = ({
             <HelpCircle className="w-4 h-4 text-indigo-400" />
             <span>排错与指南</span>
           </button>
+
+          {/* GitHub Repository Link */}
+          <a
+            href="https://github.com/etfrommars/USBee"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-3 py-2 bg-slate-800 hover:bg-slate-700 hover:text-white text-slate-200 rounded-lg transition-colors border border-slate-700 text-xs flex items-center gap-1.5 font-medium shadow-xs"
+            title="访问 GitHub 开源项目仓库 (https://github.com/etfrommars/USBee)"
+          >
+            <Github className="w-4 h-4 text-slate-300" />
+            <span className="hidden sm:inline font-mono">GitHub</span>
+          </a>
 
           {isInIframe && (
             <a

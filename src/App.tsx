@@ -16,6 +16,7 @@ import {
   Bot,
   RefreshCw,
   Eye,
+  Github,
 } from 'lucide-react';
 
 import { Header } from './components/Header';
@@ -912,6 +913,37 @@ export default function App() {
           packets={packets}
         />
       </main>
+
+      {/* Footer with GitHub Link */}
+      <footer className="mt-12 border-t border-slate-800 bg-slate-950/70 py-6 text-xs text-slate-400">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center space-x-2">
+            <Usb className="w-4 h-4 text-indigo-400" />
+            <span className="font-semibold text-slate-200">USBee</span>
+            <span className="text-slate-600">—</span>
+            <span className="text-slate-400">WebUSB 通用硬件调试上位机</span>
+          </div>
+
+          <div className="flex items-center space-x-6">
+            <a
+              href="https://github.com/etfrommars/USBee"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-1.5 text-slate-300 hover:text-white transition-colors group"
+            >
+              <Github className="w-4 h-4 text-slate-400 group-hover:text-indigo-400 transition-colors" />
+              <span className="font-mono text-[11px] group-hover:underline">github.com/etfrommars/USBee</span>
+            </a>
+            <span className="text-slate-700">|</span>
+            <button
+              onClick={() => setIsHelpOpen(true)}
+              className="text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
+            >
+              排错与开发指南
+            </button>
+          </div>
+        </div>
+      </footer>
 
       {/* Help & Troubleshooting Modal */}
       <HelpModal

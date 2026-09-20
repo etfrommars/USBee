@@ -17,6 +17,7 @@ import {
   Zap,
   Sliders,
   BookOpen,
+  Github,
 } from 'lucide-react';
 
 interface HelpModalProps {
@@ -373,10 +374,20 @@ export const HelpModal: React.FC<HelpModalProps> = ({
         </div>
 
         {/* Modal Footer */}
-        <div className="p-4 border-t border-slate-800 flex items-center justify-between bg-slate-950/80">
-          <span className="text-[11px] text-slate-500 font-mono">
-            WebUSB Debugger Suite • 100% Client-Side Pure Web Architecture
-          </span>
+        <div className="p-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3 bg-slate-950/80">
+          <div className="flex items-center gap-2 font-mono text-[11px] text-slate-500">
+            <span>USBee • WebUSB Debugger</span>
+            <span className="text-slate-700">|</span>
+            <a
+              href="https://github.com/etfrommars/USBee"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-indigo-400 hover:text-indigo-300 transition-colors"
+            >
+              <Github className="w-3.5 h-3.5" />
+              <span>github.com/etfrommars/USBee</span>
+            </a>
+          </div>
           <button
             onClick={onClose}
             className="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-lg cursor-pointer shadow-sm transition-colors"
